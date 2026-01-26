@@ -62,12 +62,30 @@ export class LoginComponent {
           this.isLoading = false;
           console.log('Login successful:', response);
           this.snackBar.open('Login successful!', 'Close', { duration: 3000 });
-          // Store token if provided in response
-          if (response.token) {
-            localStorage.setItem('authToken', response.token);
+          
+          // Store token and user data
+          if (response.data?.token) {
+            localStorage.setItem('authToken', response.data.token);
           }
-          // Navigate to home or dashboard
-          this.router.navigate(['/home']);
+          
+          // Store user data
+          if (response.data?.userDTO) {
+            localStorage.setItem('user', JSON.stringify(response.data));
+          }
+
+          // Redirect based on user role
+          const role = response.data?.userDTO?.role;
+          let redirectPath = '/home';
+          
+          if (role === 'COMPANY_ADMIN') {
+            redirectPath = '/dashboard/company-admin';
+          } else if (role === 'COMMUNITY_ADMIN') {
+            redirectPath = '/dashboard/community-admin';
+          } else if (role === 'RESIDENT') {
+            redirectPath = '/dashboard/resident';
+          }
+          
+          this.router.navigate([redirectPath]);
         },
         (error: any) => {
           this.isLoading = false;

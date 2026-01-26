@@ -7,6 +7,9 @@ import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
 import { HomeComponent } from './home/home';
 import { LoginComponent } from './login/login';
+import { CompanyAdminDashboardComponent } from './dashboards/company-admin-dashboard/company-admin-dashboard';
+import { CommunityAdminDashboardComponent } from './dashboards/community-admin-dashboard/community-admin-dashboard';
+import { ResidentDashboardComponent } from './dashboards/resident-dashboard/resident-dashboard';
 
 @NgModule({
   declarations: [
@@ -18,7 +21,10 @@ import { LoginComponent } from './login/login';
     HttpClientModule,
     AppRoutingModule,
     HomeComponent,
-    LoginComponent
+    LoginComponent,
+    CompanyAdminDashboardComponent,
+    CommunityAdminDashboardComponent,
+    ResidentDashboardComponent
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),
