@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -27,7 +27,7 @@ import { AuthService } from '../services/auth.service';
 export class LoginComponent {
   loginForm: FormGroup;
   submitted = false;
-  isLoading = false;
+  isLoading = signal(false);
 
   constructor(
     private formBuilder: FormBuilder,
@@ -53,13 +53,32 @@ export class LoginComponent {
     this.submitted = true;
 
     if (this.loginForm.valid) {
-      this.isLoading = true;
+      this.isLoading.set(true);
       const email = this.loginForm.value.email;
       const password = this.loginForm.value.password;
 
       this.authService.login(email, password).subscribe(
         (response: any) => {
-          this.isLoading = false;
+          this.isLoading.set(false);
+          
+          // Check for backend errors in the response
+          const hasErrors = response.errors && response.errors.some((error: any) => error !== null);
+          
+          if (hasErrors) {
+            // Backend returned errors
+            const errorMessage = response.errors.find((error: any) => error !== null) || 'Login failed. Please try again.';
+            console.error('Login error:', errorMessage);
+            this.snackBar.open(errorMessage, 'Close', { duration: 3000 });
+            return;
+          }
+          
+          // Check if data exists
+          if (!response.data || !response.data.userDTO) {
+            console.error('No user data in response');
+            this.snackBar.open('Login failed. Invalid response from server.', 'Close', { duration: 3000 });
+            return;
+          }
+
           console.log('Login successful:', response);
           this.snackBar.open('Login successful!', 'Close', { duration: 3000 });
           
@@ -88,9 +107,21 @@ export class LoginComponent {
           this.router.navigate([redirectPath]);
         },
         (error: any) => {
-          this.isLoading = false;
-          console.error('Login failed:', error);
-          const errorMessage = error.error?.message || 'Login failed. Please try again.';
+          this.isLoading.set(false);
+          console.error('HTTP error:', error);
+          console.log('isLoading set to false in error handler');
+          
+          // Try to get error message from response
+          let errorMessage = 'Login failed. Please try again.';
+          
+          if (error.error?.errors && error.error.errors.some((e: any) => e !== null)) {
+            errorMessage = error.error.errors.find((e: any) => e !== null);
+          } else if (error.error?.message) {
+            errorMessage = error.error.message;
+          } else if (error.statusText) {
+            errorMessage = error.statusText;
+          }
+          
           this.snackBar.open(errorMessage, 'Close', { duration: 3000 });
         }
       );
