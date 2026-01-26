@@ -1,0 +1,41 @@
+mat-card-header {
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.login-button {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: center;
+  padding: 1rem 0 0 0;
+}
+
+mat-card-actions button:hover {
+  background-color: #c6c9d8;
+}

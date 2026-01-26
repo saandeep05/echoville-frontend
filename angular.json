@@ -35,6 +35,7 @@
               }
             ],
             "styles": [
+              "src/material-theme.scss",
               "src/styles.css"
             ]
           },
@@ -69,7 +70,8 @@
               "buildTarget": "echoville-frontend:build:production"
             },
             "development": {
-              "buildTarget": "echoville-frontend:build:development"
+              "buildTarget": "echoville-frontend:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
