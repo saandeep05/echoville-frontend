@@ -24,3 +24,40 @@
   border-radius: 8px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
+
+/* Profile hover popup */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.profile-container {
+  position: relative;
+  cursor: pointer;
+}
+.profile-bubble {
+  background: rgba(255,255,255,0.12);
+  padding: 0.35rem 0.6rem;
+  border-radius: 20px;
+  color: white;
+  font-weight: 600;
+}
+.profile-popup {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  background: #fff;
+  color: #222;
+  padding: 0.6rem;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  display: none;
+  min-width: 220px;
+  z-index: 10;
+}
+.profile-container:hover .profile-popup,
+.profile-container:focus-within .profile-popup {
+  display: block;
+}
+.profile-popup p { margin: 0 0 0.5rem 0; font-size: 0.9rem; }
+.profile-popup p:last-child { margin-bottom: 0; }
