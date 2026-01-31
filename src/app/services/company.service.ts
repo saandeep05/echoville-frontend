@@ -39,4 +39,23 @@ export class CompanyService {
       })
     );
   }
+
+  createCommunity(name: string, location: string): Observable<Community | null> {
+    let companyId = '';
+    try {
+      const user = localStorage.getItem('user');
+      if (user) companyId = JSON.parse(user)?.userDTO?.companyId;
+    } catch {}
+    const token = localStorage.getItem('authToken');
+    const headersObj: { [k: string]: string } = { 'Content-Type': 'application/json' };
+    if (token) headersObj['Authorization'] = `Bearer ${token}`;
+    const headers = new HttpHeaders(headersObj);
+    const body = { name, location, companyId };
+    return this.http.post<Community>('/community/', body, { headers }).pipe(
+      catchError(err => {
+        console.error('Failed to create community', err);
+        return of(null);
+      })
+    );
+  }
 }

@@ -32,10 +32,10 @@
       <div *ngIf="activeForm === 'community'" class="form new-community">
         <h3>Create Community</h3>
         <label>Name<br /><input [(ngModel)]="newCommunity.name" /></label>
-        <label>Description<br /><input [(ngModel)]="newCommunity.description" /></label>
+        <label>Location<br /><input [(ngModel)]="newCommunity.location" /></label>
         <div class="actions">
-          <button mat-button color="primary" (click)="createCommunity()">Create</button>
-          <button mat-button (click)="cancelForm()">Cancel</button>
+          <button mat-button color="primary" (click)="createCommunity()" [disabled]="creating()">{{ creating() ? 'Creating...' : 'Create' }}</button>
+          <button mat-button (click)="cancelForm()" [disabled]="creating()">Cancel</button>
         </div>
       </div>
 

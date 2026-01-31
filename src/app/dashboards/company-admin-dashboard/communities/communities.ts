@@ -25,8 +25,9 @@ export class CompanyCommunitiesComponent implements OnInit {
   loading = signal(true);
   error: string | null = null;
 
-  newCommunity = { name: '', description: '' };
+  newCommunity = { name: '', location: '' };
   newAdmin: { name: string; email: string; communityId: number | null } = { name: '', email: '', communityId: null };
+  creating = signal(false);
 
   constructor(private companyService: CompanyService) {}
 
@@ -58,12 +59,20 @@ export class CompanyCommunitiesComponent implements OnInit {
   cancelForm() { this.activeForm = 'none'; }
 
   createCommunity() {
-    if (!this.newCommunity.name) return;
-    // Optimistically add to UI; real backend wiring would POST here
-    const id = Date.now();
-    this.communities.push({ id, name: this.newCommunity.name, description: this.newCommunity.description });
-    this.newCommunity = { name: '', description: '' };
-    this.activeForm = 'none';
+    if (!this.newCommunity.name || !this.newCommunity.location) return;
+    this.creating.set(true);
+    this.companyService.createCommunity(this.newCommunity.name, this.newCommunity.location).subscribe({
+      next: (created) => {
+        this.newCommunity = { name: '', location: '' };
+        this.activeForm = 'none';
+        this.creating.set(false);
+        this.loadCommunities(); // Always reload from backend after create
+      },
+      error: () => {
+        this.creating.set(false);
+        // Optionally show error
+      }
+    });
   }
 
   createAdmin() {
