@@ -1,18 +1,28 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
+import { SidebarComponent } from '../../shared/sidebar/sidebar';
 
 @Component({
   selector: 'app-company-admin-dashboard',
   templateUrl: './company-admin-dashboard.html',
   styleUrl: './company-admin-dashboard.css',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatCardModule]
+  imports: [CommonModule, MatButtonModule, MatCardModule, RouterModule, SidebarComponent]
 })
 export class CompanyAdminDashboardComponent implements OnInit {
   user: any;
+
+  // Sidebar configuration (shared component) — specific to Company Admin
+  sidebarItems = [
+    { label: 'Dashboard', route: 'overview' },
+    { label: 'Communities', route: 'communities' },
+    { label: 'Reports', route: 'reports' }
+  ];
+
+  baseRoute = '/dashboard/company-admin';
 
   constructor(private router: Router) {
     this.user = null;

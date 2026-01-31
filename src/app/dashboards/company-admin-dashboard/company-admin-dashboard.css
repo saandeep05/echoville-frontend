@@ -61,3 +61,13 @@
 }
 .profile-popup p { margin: 0 0 0.5rem 0; font-size: 0.9rem; }
 .profile-popup p:last-child { margin-bottom: 0; }
+
+/* Layout to support sidebar + main content */
+.dashboard-layout { display: flex; gap: 16px; align-items: stretch; padding: 1rem; }
+.dashboard-main { flex: 1; }
+.dashboard-content { padding: 16px; }
+
+@media (max-width: 800px) {
+  .dashboard-layout { flex-direction: column; }
+  .app-sidebar { width: 100%; height: auto; }
+}

@@ -1,27 +1,26 @@
-<div class="dashboard-container">
-  <div class="dashboard-header">
-    <h1>Company Admin Dashboard</h1>
-    <div class="header-actions">
-      <div class="profile-container" tabindex="0" aria-label="User profile">
-        <div class="profile-bubble">{{ user?.userDTO?.firstName }} {{ user?.userDTO?.lastName }}</div>
-        <div class="profile-popup">
-          <p><strong>Name:</strong> {{ user?.userDTO?.firstName }} {{ user?.userDTO?.lastName }}</p>
-          <p><strong>Email:</strong> {{ user?.userDTO?.email }}</p>
-          <p><strong>Role:</strong> {{ user?.userDTO?.role }}</p>
-          <p><strong>Company ID:</strong> {{ user?.userDTO?.companyId }}</p>
-          <p><strong>Phone:</strong> {{ user?.userDTO?.phone }}</p>
-        </div>
-      </div>
-      <button mat-raised-button color="warn" (click)="logout()">Logout</button>
-    </div>
-  </div>  
+<div class="dashboard-layout">
+  <app-sidebar [items]="sidebarItems" [baseRoute]="baseRoute"></app-sidebar>
 
-  <mat-card class="dashboard-card">
-    <mat-card-header>
-      <mat-card-title>Company Management Features</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <p>Manage company settings, communities, and administrators.</p>
-    </mat-card-content>
-  </mat-card>
+  <div class="dashboard-main">
+    <div class="dashboard-header">
+      <h1>Company Admin Dashboard</h1>
+      <div class="header-actions">
+        <div class="profile-container" tabindex="0" aria-label="User profile">
+          <div class="profile-bubble">{{ user?.userDTO?.firstName }} {{ user?.userDTO?.lastName }}</div>
+          <div class="profile-popup">
+            <p><strong>Name:</strong> {{ user?.userDTO?.firstName }} {{ user?.userDTO?.lastName }}</p>
+            <p><strong>Email:</strong> {{ user?.userDTO?.email }}</p>
+            <p><strong>Role:</strong> {{ user?.userDTO?.role }}</p>
+            <p><strong>Company ID:</strong> {{ user?.userDTO?.companyId }}</p>
+            <p><strong>Phone:</strong> {{ user?.userDTO?.phone }}</p>
+          </div>
+        </div>
+        <button mat-raised-button color="warn" (click)="logout()">Logout</button>
+      </div>
+    </div>
+
+    <div class="dashboard-content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
 </div>
