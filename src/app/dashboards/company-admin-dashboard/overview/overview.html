@@ -1,4 +1,33 @@
 <div class="overview">
   <h2>Overview</h2>
-  <p>Company-level summary and quick actions.</p>
+
+  <div class="metrics">
+    <mat-card class="metric">
+      <mat-card-title>Communities</mat-card-title>
+      <mat-card-content>
+        <div class="metric-value">
+          <ng-container *ngIf="!loading(); else loadingTpl">{{ communityCount }}</ng-container>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="metric">
+      <mat-card-title>Houses</mat-card-title>
+      <mat-card-content>
+        <div class="metric-value">
+          <ng-container *ngIf="!loading(); else loadingTpl">{{ houseCount }}</ng-container>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <ng-template #loadingTpl>
+    <span>Loading...</span>
+  </ng-template>
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <div class="quick-actions">
+    <button mat-raised-button color="primary" (click)="goTo('communities')">Manage Communities</button>
+    <button mat-raised-button color="accent" (click)="goTo('reports')">View Reports</button>
+  </div>
 </div>

@@ -1,4 +1,60 @@
-<div class="communities">
-  <h2>Communities</h2>
-  <p>List and manage communities belonging to this company.</p>
+<div class="communities-page split-layout">
+  <div class="left">
+    <div class="controls">
+      <button mat-raised-button color="primary" (click)="openCommunityForm()">Create Community</button>
+      <button mat-stroked-button color="accent" (click)="openAdminForm()">Create Community Admin</button>
+    </div>
+
+    <div class="list">
+      <h3>Communities</h3>
+
+      <div *ngIf="loading()">Loading communities...</div>
+      <div *ngIf="error" class="error">{{ error }}</div>
+
+      <ul *ngIf="!loading() && !error">
+        <li *ngFor="let c of communities">
+          <div class="community-card">
+            <h4>{{ c.name }}</h4>
+            <p>{{ c.description || c.location }}</p>
+            <p><strong>Admins:</strong> {{ getAdminsForCommunity(c.id).length }}</p>
+          </div>
+        </li>
+      </ul>
+
+      <div *ngIf="!loading() && !error && communities.length === 0">No communities found for this company.</div>
+    </div>
+  </div>
+
+  <div class="right" *ngIf="activeForm !== 'none'">
+    <div class="panel">
+      <button class="close" mat-icon-button aria-label="Close form" (click)="cancelForm()">✕</button>
+
+      <div *ngIf="activeForm === 'community'" class="form new-community">
+        <h3>Create Community</h3>
+        <label>Name<br /><input [(ngModel)]="newCommunity.name" /></label>
+        <label>Description<br /><input [(ngModel)]="newCommunity.description" /></label>
+        <div class="actions">
+          <button mat-button color="primary" (click)="createCommunity()">Create</button>
+          <button mat-button (click)="cancelForm()">Cancel</button>
+        </div>
+      </div>
+
+      <div *ngIf="activeForm === 'admin'" class="form new-admin">
+        <h3>Create Community Admin</h3>
+        <label>Name<br /><input [(ngModel)]="newAdmin.name" /></label>
+        <label>Email<br /><input [(ngModel)]="newAdmin.email" /></label>
+        <label>Community<br />
+          <select [(ngModel)]="newAdmin.communityId">
+            <option [ngValue]="null">-- select --</option>
+            <option *ngFor="let c of communities" [ngValue]="c.id">{{ c.name }}</option>
+          </select>
+        </label>
+        <div class="actions">
+          <button mat-button color="primary" (click)="createAdmin()">Create Admin</button>
+          <button mat-button (click)="cancelForm()">Cancel</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </div>

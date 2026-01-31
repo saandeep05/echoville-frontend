@@ -1,1 +1,19 @@
-.communities { padding: 16px; }
+.communities-page { padding: 16px; }
+.split-layout { display:flex; gap:16px; align-items:flex-start; }
+.left { flex: 1; min-width: 280px; }
+.right { width: 420px; }
+.controls { display:flex; gap:12px; margin-bottom:12px; }
+.panel { position: relative; background: #fff; border: 1px solid #eee; padding: 12px; border-radius: 6px; box-shadow: 0 6px 18px rgba(0,0,0,0.05); }
+.close { position: absolute; right: 8px; top: 8px; background: transparent; border: none; font-size: 1rem; cursor: pointer; }
+.form { padding:12px; }
+.form label { display:block; margin-bottom:8px; }
+.form input, .form select { width:100%; padding:6px; margin-top:4px; box-sizing:border-box; }
+.actions { margin-top:8px; display:flex; gap:8px; }
+.list ul { list-style:none; padding:0; margin:0; }
+.community-card { padding:12px; border:1px solid #f0f0f0; border-radius:6px; margin-bottom:8px; }
+
+@media (max-width: 900px) {
+  .split-layout { flex-direction: column; }
+  .right { width: 100%; }
+  .left { min-width: 0; }
+}
