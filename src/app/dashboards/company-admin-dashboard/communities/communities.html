@@ -41,8 +41,12 @@
 
       <div *ngIf="activeForm === 'admin'" class="form new-admin">
         <h3>Create Community Admin</h3>
-        <label>Name<br /><input [(ngModel)]="newAdmin.name" /></label>
+        <label>Username<br /><input [(ngModel)]="newAdmin.username" /></label>
         <label>Email<br /><input [(ngModel)]="newAdmin.email" /></label>
+        <label>Password<br /><input [(ngModel)]="newAdmin.password" type="password" /></label>
+        <label>First Name<br /><input [(ngModel)]="newAdmin.firstName" /></label>
+        <label>Last Name<br /><input [(ngModel)]="newAdmin.lastName" /></label>
+        <label>Phone<br /><input [(ngModel)]="newAdmin.phone" /></label>
         <label>Community<br />
           <select [(ngModel)]="newAdmin.communityId">
             <option [ngValue]="null">-- select --</option>
@@ -50,8 +54,8 @@
           </select>
         </label>
         <div class="actions">
-          <button mat-button color="primary" (click)="createAdmin()">Create Admin</button>
-          <button mat-button (click)="cancelForm()">Cancel</button>
+          <button mat-button color="primary" (click)="createAdmin()" [disabled]="creatingAdmin()">{{ creatingAdmin() ? 'Creating...' : 'Create Admin' }}</button>
+          <button mat-button (click)="cancelForm()" [disabled]="creatingAdmin()">Cancel</button>
         </div>
       </div>
 

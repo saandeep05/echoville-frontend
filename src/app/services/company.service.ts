@@ -58,4 +58,35 @@ export class CompanyService {
       })
     );
   }
+
+  createCommunityAdmin(admin: {
+    username: string;
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    phone: string;
+    communityId: number;
+  }): Observable<any> {
+    let companyId = '';
+    try {
+      const user = localStorage.getItem('user');
+      if (user) companyId = JSON.parse(user)?.userDTO?.companyId;
+    } catch {}
+    const token = localStorage.getItem('authToken');
+    const headersObj: { [k: string]: string } = { 'Content-Type': 'application/json' };
+    if (token) headersObj['Authorization'] = `Bearer ${token}`;
+    const headers = new HttpHeaders(headersObj);
+    const { communityId, ...payload } = admin;
+    return this.http.post<any>(
+      `/user/createAdmin/${companyId}/${communityId}`,
+      payload,
+      { headers }
+    ).pipe(
+      catchError(err => {
+        console.error('Failed to create community admin', err);
+        return of(null);
+      })
+    );
+  }
 }

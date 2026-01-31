@@ -26,8 +26,17 @@ export class CompanyCommunitiesComponent implements OnInit {
   error: string | null = null;
 
   newCommunity = { name: '', location: '' };
-  newAdmin: { name: string; email: string; communityId: number | null } = { name: '', email: '', communityId: null };
+  newAdmin: {
+    username: string;
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    phone: string;
+    communityId: number | null;
+  } = { username: '', email: '', password: '', firstName: '', lastName: '', phone: '', communityId: null };
   creating = signal(false);
+  creatingAdmin = signal(false);
 
   constructor(private companyService: CompanyService) {}
 
@@ -76,11 +85,23 @@ export class CompanyCommunitiesComponent implements OnInit {
   }
 
   createAdmin() {
-    if (!this.newAdmin.name || !this.newAdmin.email || !this.newAdmin.communityId) return;
-    const id = Date.now();
-    this.admins.push({ id, name: this.newAdmin.name, email: this.newAdmin.email, communityId: this.newAdmin.communityId });
-    this.newAdmin = { name: '', email: '', communityId: null };
-    this.activeForm = 'none';
+    if (!this.newAdmin.username || !this.newAdmin.email || !this.newAdmin.password || !this.newAdmin.firstName || !this.newAdmin.lastName || !this.newAdmin.phone || !this.newAdmin.communityId) return;
+    this.creatingAdmin.set(true);
+    this.companyService.createCommunityAdmin({
+      ...this.newAdmin,
+      communityId: this.newAdmin.communityId!
+    }).subscribe({
+      next: (created) => {
+        this.newAdmin = { username: '', email: '', password: '', firstName: '', lastName: '', phone: '', communityId: null };
+        this.activeForm = 'none';
+        this.creatingAdmin.set(false);
+        this.loadCommunities(); // Optionally reload communities if needed
+      },
+      error: () => {
+        this.creatingAdmin.set(false);
+        // Optionally show error
+      }
+    });
   }
 
   getAdminsForCommunity(cid:number) { return this.admins.filter(a => a.communityId === cid); }
