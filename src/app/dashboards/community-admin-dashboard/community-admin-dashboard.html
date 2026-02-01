@@ -1,27 +1,24 @@
-<div class="dashboard-container">
-  <div class="dashboard-header">
-    <h1>Community Admin Dashboard</h1>
-    <div class="header-actions">
-      <div class="profile-container" tabindex="0" aria-label="User profile">
-        <div class="profile-bubble">{{ user?.userDTO?.firstName }} {{ user?.userDTO?.lastName }}</div>
-        <div class="profile-popup">
-          <p><strong>Name:</strong> {{ user?.userDTO?.firstName }} {{ user?.userDTO?.lastName }}</p>
-          <p><strong>Email:</strong> {{ user?.userDTO?.email }}</p>
-          <p><strong>Role:</strong> {{ user?.userDTO?.role }}</p>
-          <p><strong>Community ID:</strong> {{ user?.userDTO?.communityId }}</p>
-          <p><strong>Phone:</strong> {{ user?.userDTO?.phone }}</p>
+<div class="dashboard-layout">
+  <app-community-admin-sidebar [items]="sidebarItems" [baseRoute]="baseRoute"></app-community-admin-sidebar>
+  <div class="dashboard-main">
+    <div class="dashboard-header">
+      <h1>Community Admin Dashboard</h1>
+      <div class="header-actions">
+        <div class="profile-container" tabindex="0" aria-label="User profile">
+          <div class="profile-bubble">{{ user?.userDTO?.firstName }} {{ user?.userDTO?.lastName }}</div>
+          <div class="profile-popup">
+            <p><strong>Name:</strong> {{ user?.userDTO?.firstName }} {{ user?.userDTO?.lastName }}</p>
+            <p><strong>Email:</strong> {{ user?.userDTO?.email }}</p>
+            <p><strong>Role:</strong> {{ user?.userDTO?.role }}</p>
+            <p><strong>Community ID:</strong> {{ user?.userDTO?.communityId }}</p>
+            <p><strong>Phone:</strong> {{ user?.userDTO?.phone }}</p>
+          </div>
         </div>
+        <button mat-raised-button color="warn" (click)="logout()">Logout</button>
       </div>
-      <button mat-raised-button color="warn" (click)="logout()">Logout</button>
     </div>
-  </div>  
-
-  <mat-card class="dashboard-card">
-    <mat-card-header>
-      <mat-card-title>Community Management Features</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <p>Manage community members, posts, and issues.</p>
-    </mat-card-content>
-  </mat-card>
+    <div class="dashboard-content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
 </div>

@@ -1,0 +1,7 @@
+<nav class="app-sidebar" aria-label="Community admin navigation">
+  <ul>
+    <li *ngFor="let item of items">
+      <a [routerLink]="buildLink(item)" routerLinkActive="active">{{ item.label }}</a>
+    </li>
+  </ul>
+</nav>

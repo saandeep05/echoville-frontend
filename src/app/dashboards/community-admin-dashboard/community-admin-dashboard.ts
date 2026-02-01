@@ -1,18 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
+import { CommunityAdminSidebarComponent } from './sidebar/sidebar';
 
 @Component({
   selector: 'app-community-admin-dashboard',
   templateUrl: './community-admin-dashboard.html',
   styleUrl: './community-admin-dashboard.css',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatCardModule]
+  imports: [CommonModule, MatButtonModule, MatCardModule, RouterModule, CommunityAdminSidebarComponent]
 })
 export class CommunityAdminDashboardComponent implements OnInit {
   user: any;
+
+  sidebarItems = [
+    { label: 'Dashboard', route: 'dashboard' },
+    { label: 'Houses', route: 'houses' },
+    { label: 'Residents', route: 'residents' },
+    { label: 'Bills', route: 'bills' }
+  ];
+  baseRoute = '/dashboard/community-admin';
 
   constructor(private router: Router) {
     this.user = null;

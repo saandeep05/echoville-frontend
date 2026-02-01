@@ -8,6 +8,11 @@ import { CompanyCommunitiesComponent } from './dashboards/company-admin-dashboar
 import { CompanyReportsComponent } from './dashboards/company-admin-dashboard/reports/reports';
 import { CommunityAdminDashboardComponent } from './dashboards/community-admin-dashboard/community-admin-dashboard';
 import { ResidentDashboardComponent } from './dashboards/resident-dashboard/resident-dashboard';
+import { CommunityAdminSidebarComponent } from './dashboards/community-admin-dashboard/sidebar/sidebar';
+import { CommunityAdminDashboardSectionComponent } from './dashboards/community-admin-dashboard/dashboard/dashboard';
+import { CommunityHousesComponent } from './dashboards/community-admin-dashboard/houses/houses';
+import { CommunityResidentsComponent } from './dashboards/community-admin-dashboard/residents/residents';
+import { CommunityBillsComponent } from './dashboards/community-admin-dashboard/bills/bills';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -19,7 +24,13 @@ const routes: Routes = [
     { path: 'communities', component: CompanyCommunitiesComponent },
     { path: 'reports', component: CompanyReportsComponent }
   ] },
-  { path: 'dashboard/community-admin', component: CommunityAdminDashboardComponent },
+  { path: 'dashboard/community-admin', component: CommunityAdminDashboardComponent, children: [
+    { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+    { path: 'dashboard', component: CommunityAdminDashboardSectionComponent },
+    { path: 'houses', component: CommunityHousesComponent },
+    { path: 'residents', component: CommunityResidentsComponent },
+    { path: 'bills', component: CommunityBillsComponent }
+  ] },
   { path: 'dashboard/resident', component: ResidentDashboardComponent },
   { path: '**', redirectTo: '/home' }
 ];
