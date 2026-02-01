@@ -1,1 +1,31 @@
+.bills-page {
+	padding: 16px;
+}
+.bills-page table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 12px;
+	background: #fff;
+	border-radius: 8px;
+	overflow: hidden;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.bills-page th, .bills-page td {
+	border: 1px solid #e0e0e0;
+	padding: 10px 12px;
+	text-align: left;
+	font-size: 15px;
+}
+.bills-page th {
+	background: #f7f7f7;
+	font-weight: 600;
+	color: #333;
+}
+.bills-page tr:nth-child(even) {
+	background: #fafbfc;
+}
+.bills-page .error {
+	color: #b71c1c;
+	margin: 12px 0;
+}
 .bills { padding: 16px; }

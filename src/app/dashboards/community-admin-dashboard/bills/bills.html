@@ -1,4 +1,28 @@
-<div class="bills">
+<div class="bills-page">
   <h2>Bills</h2>
-  <p>All bills in this community will be listed here.</p>
+  <div *ngIf="loading()">Loading bills...</div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+  <table *ngIf="!loading() && !error && bills.length > 0">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Amount</th>
+        <th>Due Date</th>
+        <th>Status</th>
+        <th>House</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let bill of bills">
+        <td>{{ bill.title }}</td>
+        <td>{{ bill.amount | currency:'INR':'symbol-narrow':'1.2-2':'en-IN' }}</td>
+        <td>{{ bill.dueDate | date:'mediumDate' }}</td>
+        <td>{{ bill.status }}</td>
+        <td>{{ "Block " + bill.houseDTO.block + ", Floor " + bill.houseDTO.floor + ", #" + bill.houseDTO.number + " (" + bill.houseDTO.type + ")"  }}</td>
+        <td>{{ bill.description || '-' }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div *ngIf="!loading() && !error && bills.length === 0">No bills found for this community.</div>
 </div>
