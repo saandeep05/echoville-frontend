@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { Community, ApiResponse } from '../models/community.model';
+import { House } from '../models/house.model';
 
 @Injectable({ providedIn: 'root' })
 export class CompanyService {
@@ -86,6 +87,35 @@ export class CompanyService {
       catchError(err => {
         console.error('Failed to create community admin', err);
         return of(null);
+      })
+    );
+  }
+
+  getHousesForCommunity(communityId?: number): Observable<House[]> {
+    let commId = communityId;
+    if (!commId) {
+      try {
+        const user = localStorage.getItem('user');
+        if (user) commId = JSON.parse(user)?.userDTO?.communityId;
+      } catch {}
+    }
+    const token = localStorage.getItem('authToken');
+    const companyId = (() => {
+      try {
+        const user = localStorage.getItem('user');
+        if (user) return JSON.parse(user)?.userDTO?.companyId;
+      } catch {}
+      return '';
+    })();
+    const headersObj: { [k: string]: string } = {};
+    if (companyId) headersObj['companyId'] = companyId;
+    if (token) headersObj['Authorization'] = `Bearer ${token}`;
+    const headers = new HttpHeaders(headersObj);
+    return this.http.get<ApiResponse<House[]>>(`/house/${commId}`, { headers }).pipe(
+      map(res => res?.data || []),
+      catchError(err => {
+        console.error('Failed to load houses', err);
+        return of([]);
       })
     );
   }

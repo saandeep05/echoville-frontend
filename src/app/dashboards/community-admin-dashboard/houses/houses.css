@@ -1,1 +1,23 @@
 .houses { padding: 16px; }
+.houses-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  overflow: hidden;
+}
+.houses-table th, .houses-table td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+.houses-table th {
+  background: #f5f5f5;
+  font-weight: 600;
+}
+.houses-table tr:last-child td {
+  border-bottom: none;
+}
+.error { color: #c00; margin-top: 12px; }

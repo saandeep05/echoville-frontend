@@ -1,4 +1,30 @@
 <div class="houses">
   <h2>Houses</h2>
-  <p>All houses in this community will be listed here.</p>
+  <div *ngIf="loading()">Loading houses...</div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+  <table *ngIf="!loading() && !error && houses.length > 0" class="houses-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Block</th>
+        <th>Floor</th>
+        <th>Number</th>
+        <th>Type</th>
+        <th>Residents</th>
+        <th>Bills</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let h of houses">
+        <td>{{ h.id }}</td>
+        <td>{{ h.block }}</td>
+        <td>{{ h.floor }}</td>
+        <td>{{ h.number }}</td>
+        <td>{{ h.type }}</td>
+        <td>{{ h.residents?.length || 0 }}</td>
+        <td>{{ h.bills?.length || 0 }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div *ngIf="!loading() && !error && houses.length === 0">No houses found for this community.</div>
 </div>
