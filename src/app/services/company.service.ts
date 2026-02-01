@@ -5,6 +5,8 @@ import { map, catchError } from 'rxjs/operators';
 import { Community, ApiResponse } from '../models/community.model';
 import { House } from '../models/house.model';
 
+import { Resident, ResidentsResponse } from '../models/resident.model';
+
 @Injectable({ providedIn: 'root' })
 export class CompanyService {
   // Use relative path for proxy
@@ -115,6 +117,25 @@ export class CompanyService {
       map(res => res?.data || []),
       catchError(err => {
         console.error('Failed to load houses', err);
+        return of([]);
+      })
+    );
+  }
+  getResidentsForCommunity(communityId: number): Observable<Resident[]> {
+    const token = localStorage.getItem('authToken');
+    let companyId = '';
+    try {
+      const user = localStorage.getItem('user');
+      if (user) companyId = JSON.parse(user)?.userDTO?.companyId;
+    } catch {}
+    const headersObj: { [k: string]: string } = {};
+    if (companyId) headersObj['companyId'] = companyId;
+    if (token) headersObj['Authorization'] = `Bearer ${token}`;
+    const headers = new HttpHeaders(headersObj);
+    return this.http.get<ResidentsResponse>(`/user/${communityId}`, { headers }).pipe(
+      map(res => res?.data || []),
+      catchError(err => {
+        console.error('Failed to load residents', err);
         return of([]);
       })
     );

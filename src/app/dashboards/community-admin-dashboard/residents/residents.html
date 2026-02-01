@@ -1,4 +1,32 @@
 <div class="residents">
   <h2>Residents</h2>
-  <p>All residents in this community will be listed here.</p>
+  <div *ngIf="loading()">Loading residents...</div>
+  <ng-container *ngIf="!loading()">
+    <table *ngIf="residents().length > 0; else noResidents">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>House</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let resident of residents()">
+          <td>{{ resident.firstName }} {{ resident.lastName }}</td>
+          <td>{{ resident.email }}</td>
+          <td>{{ resident.phone }}</td>
+          <td>
+            <ng-container *ngIf="resident.houseDTO; else noHouse">
+              Block {{ resident.houseDTO.block }}, Floor {{ resident.houseDTO.floor }}, #{{ resident.houseDTO.number }} ({{ resident.houseDTO.type }})
+            </ng-container>
+            <ng-template #noHouse>—</ng-template>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <ng-template #noResidents>
+      <p>No residents found for this community.</p>
+    </ng-template>
+  </ng-container>
 </div>
