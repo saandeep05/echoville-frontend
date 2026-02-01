@@ -1,3 +1,5 @@
+
+
 import { Bill, BillsResponse } from '../models/bill.model';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -5,7 +7,6 @@ import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { Community, ApiResponse } from '../models/community.model';
 import { House } from '../models/house.model';
-
 import { Resident, ResidentsResponse } from '../models/resident.model';
 
 @Injectable({ providedIn: 'root' })
@@ -14,6 +15,44 @@ export class CompanyService {
   private baseUrl = '';
 
   constructor(private http: HttpClient) {}
+
+  createBill(bill: {
+    title: string;
+    amount: number;
+    dueDate: string;
+    description?: string;
+    status: string;
+    houseId: number;
+    communityId: number;
+  }): Observable<Bill | null> {
+    let companyId = '';
+    try {
+      const user = localStorage.getItem('user');
+      if (user) companyId = JSON.parse(user)?.userDTO?.companyId;
+    } catch {}
+    const token = localStorage.getItem('authToken');
+    const headersObj: { [k: string]: string } = { 'Content-Type': 'application/json' };
+    if (companyId) headersObj['companyId'] = companyId;
+    if (bill.communityId) headersObj['communityId'] = String(bill.communityId);
+    if (token) headersObj['Authorization'] = `Bearer ${token}`;
+    const headers = new HttpHeaders(headersObj);
+    const body = {
+      title: bill.title,
+      amount: bill.amount,
+      dueDate: bill.dueDate,
+      description: bill.description,
+      status: bill.status,
+      houseId: bill.houseId,
+      communityId: bill.communityId
+    };
+    return this.http.post<{ data: Bill }>(`/bill/`, body, { headers }).pipe(
+      map(res => res?.data || null),
+      catchError(err => {
+        console.error('Failed to create bill', err);
+        return of(null);
+      })
+    );
+  }
 
   getCommunities(companyId?: string): Observable<Community[]> {
     // Prefer provided companyId, otherwise try to read from localStorage user object

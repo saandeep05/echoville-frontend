@@ -15,6 +15,7 @@ export interface Bill {
   title: string;
   description: string | null;
   status: BillStatus | string;
+  houseId?: number; // for bill creation
 }
 
 export interface BillsResponse {

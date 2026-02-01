@@ -1,0 +1,22 @@
+<div class="panel">
+  <button class="close" mat-icon-button aria-label="Close form" (click)="onCancel()">✕</button>
+  <div class="form new-bill">
+    <h3>Create Bill</h3>
+    <label>Title<br /><input [(ngModel)]="bill.title" required /></label>
+    <label>Amount<br /><input type="number" [(ngModel)]="bill.amount" required min="1" /></label>
+    <label>Due Date<br /><input type="date" [(ngModel)]="bill.dueDate" required /></label>
+    <label>Description<br /><textarea [(ngModel)]="bill.description"></textarea></label>
+    <label>Status<br />
+      <select [(ngModel)]="bill.status">
+        <option [ngValue]="'UNPAID'">Unpaid</option>
+        <option [ngValue]="'PAID'">Paid</option>
+        <option [ngValue]="'OVERDUE'">Overdue</option>
+      </select>
+    </label>
+    <div class="actions">
+      <button mat-raised-button color="primary" (click)="submit()" [disabled]="creating">{{ creating ? 'Creating...' : 'Create' }}</button>
+      <button mat-button (click)="onCancel()" [disabled]="creating">Cancel</button>
+    </div>
+    <div *ngIf="error" class="error">{{ error }}</div>
+  </div>
+</div>

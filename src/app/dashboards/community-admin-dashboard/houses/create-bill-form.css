@@ -1,0 +1,7 @@
+.panel { position: relative; background: #fff; border: 1px solid #eee; padding: 12px; border-radius: 6px; box-shadow: 0 6px 18px rgba(0,0,0,0.05); }
+.close { position: absolute; right: 8px; top: 8px; background: transparent; border: none; font-size: 1rem; cursor: pointer; }
+.form { padding:12px; }
+.form label { display:block; margin-bottom:8px; }
+.form input, .form select, .form textarea { width:100%; padding:6px; margin-top:4px; box-sizing:border-box; }
+.actions { margin-top:8px; display:flex; gap:8px; }
+.error { color: #c00; margin-top: 8px; }

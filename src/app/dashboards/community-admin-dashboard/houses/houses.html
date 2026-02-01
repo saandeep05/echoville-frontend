@@ -1,30 +1,45 @@
-<div class="houses">
-  <h2>Houses</h2>
-  <div *ngIf="loading()">Loading houses...</div>
-  <div *ngIf="error" class="error">{{ error }}</div>
-  <table *ngIf="!loading() && !error && houses.length > 0" class="houses-table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Block</th>
-        <th>Floor</th>
-        <th>Number</th>
-        <th>Type</th>
-        <th>Residents</th>
-        <th>Bills</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let h of houses">
-        <td>{{ h.id }}</td>
-        <td>{{ h.block }}</td>
-        <td>{{ h.floor }}</td>
-        <td>{{ h.number }}</td>
-        <td>{{ h.type }}</td>
-        <td>{{ h.residents?.length || 0 }}</td>
-        <td>{{ h.bills?.length || 0 }}</td>
-      </tr>
-    </tbody>
-  </table>
-  <div *ngIf="!loading() && !error && houses.length === 0">No houses found for this community.</div>
+<div class="houses-page split-layout">
+  <div class="left">
+    <h2>Houses</h2>
+    <div *ngIf="loading()">Loading houses...</div>
+    <div *ngIf="error" class="error">{{ error }}</div>
+    <table *ngIf="!loading() && !error && houses.length > 0" class="houses-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Block</th>
+          <th>Floor</th>
+          <th>Number</th>
+          <th>Type</th>
+          <th>Residents</th>
+          <th>Bills</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let h of houses">
+          <td>{{ h.id }}</td>
+          <td>{{ h.block }}</td>
+          <td>{{ h.floor }}</td>
+          <td>{{ h.number }}</td>
+          <td>{{ h.type }}</td>
+          <td>{{ h.residents?.length || 0 }}</td>
+          <td>{{ h.bills?.length || 0 }}</td>
+          <td>
+            <button mat-raised-button color="primary" (click)="openBillForm(h)">Create Bill</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="!loading() && !error && houses.length === 0">No houses found for this community.</div>
+  </div>
+  <div class="right" *ngIf="showBillForm() && selectedHouse">
+    <app-create-bill-form
+      [houseId]="selectedHouse.id"
+      [communityId]="selectedHouse.communityId"
+      (create)="createBill($event)"
+      (cancel)="closeBillForm()"
+    ></app-create-bill-form>
+    <div *ngIf="billError" class="error">{{ billError }}</div>
+  </div>
 </div>

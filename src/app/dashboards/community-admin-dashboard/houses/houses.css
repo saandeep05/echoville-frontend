@@ -1,4 +1,7 @@
-.houses { padding: 16px; }
+.houses-page { padding: 16px; }
+.split-layout { display: flex; gap: 16px; align-items: flex-start; }
+.left { flex: 1; min-width: 280px; }
+.right { width: 420px; }
 .houses-table {
   width: 100%;
   border-collapse: collapse;
