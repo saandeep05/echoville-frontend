@@ -1,5 +1,7 @@
 import { Component, Input, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 import { CompanyService } from '../../../services/company.service';
 import { Resident } from '../../../models/resident.model';
 
@@ -8,12 +10,23 @@ import { Resident } from '../../../models/resident.model';
   templateUrl: './residents.html',
   styleUrls: ['./residents.css'],
   standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule, FormsModule, MatButtonModule]
 })
 export class CommunityResidentsComponent implements OnInit {
   @Input() communityId!: number;
   residents = signal<Resident[]>([]);
   loading = signal(false);
+  showForm = signal(false);
+  creating = signal(false);
+  error: string | null = null;
+  newResident = {
+    username: '',
+    email: '',
+    password: '',
+    firstName: '',
+    lastName: '',
+    phone: ''
+  };
 
   constructor(private companyService: CompanyService) {}
 
@@ -34,10 +47,44 @@ export class CommunityResidentsComponent implements OnInit {
   }
 
   fetchResidents() {
-    this.loading.update(() => true);
+    this.loading.set(true);
     this.companyService.getResidentsForCommunity(this.communityId).subscribe(res => {
-      this.residents.update(() => res);
-      this.loading.update(() => false);
+      this.residents.set(res);
+      this.loading.set(false);
+    });
+  }
+
+  openResidentForm() {
+    this.showForm.set(true);
+    this.error = null;
+    this.newResident = {
+      username: '',
+      email: '',
+      password: '',
+      firstName: '',
+      lastName: '',
+      phone: ''
+    };
+  }
+
+  cancelForm() {
+    this.showForm.set(false);
+    this.error = null;
+  }
+
+  createResident() {
+    this.creating.set(true);
+    this.error = null;
+    this.companyService.createResident(this.communityId, this.newResident).subscribe({
+      next: (res) => {
+        this.creating.set(false);
+        this.showForm.set(false);
+        this.fetchResidents();
+      },
+      error: (err) => {
+        this.creating.set(false);
+        this.error = 'Failed to create resident.';
+      }
     });
   }
 }

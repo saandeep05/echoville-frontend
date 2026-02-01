@@ -140,4 +140,24 @@ export class CompanyService {
       })
     );
   }
+
+  createResident(communityId: number, resident: { username: string; email: string; password: string; firstName: string; lastName: string; phone: string; }): Observable<Resident | null> {
+    const token = localStorage.getItem('authToken');
+    let companyId = '';
+    try {
+      const user = localStorage.getItem('user');
+      if (user) companyId = JSON.parse(user)?.userDTO?.companyId;
+    } catch {}
+    const headersObj: { [k: string]: string } = { 'Content-Type': 'application/json' };
+    if (companyId) headersObj['companyId'] = companyId;
+    if (token) headersObj['Authorization'] = `Bearer ${token}`;
+    const headers = new HttpHeaders(headersObj);
+    return this.http.post<{ data: Resident }>(`/user/${communityId}`, resident, { headers }).pipe(
+      map(res => res?.data || null),
+      catchError(err => {
+        console.error('Failed to create resident', err);
+        return of(null);
+      })
+    );
+  }
 }

@@ -1,32 +1,56 @@
-<div class="residents">
-  <h2>Residents</h2>
-  <div *ngIf="loading()">Loading residents...</div>
-  <ng-container *ngIf="!loading()">
-    <table *ngIf="residents().length > 0; else noResidents">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Phone</th>
-          <th>House</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let resident of residents()">
-          <td>{{ resident.firstName }} {{ resident.lastName }}</td>
-          <td>{{ resident.email }}</td>
-          <td>{{ resident.phone }}</td>
-          <td>
-            <ng-container *ngIf="resident.houseDTO; else noHouse">
-              Block {{ resident.houseDTO.block }}, Floor {{ resident.houseDTO.floor }}, #{{ resident.houseDTO.number }} ({{ resident.houseDTO.type }})
-            </ng-container>
-            <ng-template #noHouse>—</ng-template>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <ng-template #noResidents>
-      <p>No residents found for this community.</p>
-    </ng-template>
-  </ng-container>
+<div class="residents-page split-layout">
+  <div class="left">
+    <div class="controls">
+      <button mat-raised-button color="primary" (click)="openResidentForm()">Create Resident</button>
+    </div>
+    <div class="list">
+      <h3>Residents</h3>
+      <div *ngIf="loading()">Loading residents...</div>
+      <div *ngIf="error" class="error">{{ error }}</div>
+      <table *ngIf="!loading() && !error && residents().length > 0">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>House</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let resident of residents()">
+            <td>{{ resident.firstName }} {{ resident.lastName }}</td>
+            <td>{{ resident.email }}</td>
+            <td>{{ resident.phone }}</td>
+            <td>
+              <ng-container *ngIf="resident.houseDTO; else noHouse">
+                Block {{ resident.houseDTO.block }}, Floor {{ resident.houseDTO.floor }}, #{{ resident.houseDTO.number }} ({{ resident.houseDTO.type }})
+              </ng-container>
+              <ng-template #noHouse>—</ng-template>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div *ngIf="!loading() && !error && residents().length === 0">No residents found for this community.</div>
+    </div>
+  </div>
+
+  <div class="right" *ngIf="showForm()">
+    <div class="panel">
+      <button class="close" mat-icon-button aria-label="Close form" (click)="cancelForm()">✕</button>
+      <div class="form new-resident">
+        <h3>Create Resident</h3>
+        <label>Username<br /><input [(ngModel)]="newResident.username" /></label>
+        <label>Email<br /><input [(ngModel)]="newResident.email" /></label>
+        <label>Password<br /><input [(ngModel)]="newResident.password" type="password" /></label>
+        <label>First Name<br /><input [(ngModel)]="newResident.firstName" /></label>
+        <label>Last Name<br /><input [(ngModel)]="newResident.lastName" /></label>
+        <label>Phone<br /><input [(ngModel)]="newResident.phone" /></label>
+        <div class="actions">
+          <button mat-button color="primary" (click)="createResident()" [disabled]="creating()">{{ creating() ? 'Creating...' : 'Create' }}</button>
+          <button mat-button (click)="cancelForm()" [disabled]="creating()">Cancel</button>
+        </div>
+        <div *ngIf="error" class="error">{{ error }}</div>
+      </div>
+    </div>
+  </div>
 </div>
