@@ -34,6 +34,7 @@ export class CommunityResidentsComponent implements OnInit {
 
   constructor(private companyService: CompanyService) {}
 
+
   ngOnInit() {
     // Always get communityId from user object if not provided
     if (!this.communityId) {
@@ -46,18 +47,30 @@ export class CommunityResidentsComponent implements OnInit {
       } catch {}
     }
     if (this.communityId) {
-      this.fetchResidents();
-      this.fetchHouses();
+      this.fetchResidentsAndHouses();
     }
   }
 
-  fetchResidents() {
+  fetchResidentsAndHouses() {
     this.loading.set(true);
     this.companyService.getResidentsForCommunity(this.communityId).subscribe(res => {
       this.residents.set(res);
+      this.companyService.getHousesForCommunity(this.communityId).subscribe(houses => {
+        this.houses = houses || [];
+        this.loading.set(false);
+      }, () => {
+        this.houses = [];
+        this.loading.set(false);
+      });
+    }, () => {
+      this.residents.set([]);
+      this.houses = [];
       this.loading.set(false);
     });
   }
+
+
+  // fetchResidents() removed; use fetchResidentsAndHouses instead
 
   fetchHouses() {
     this.companyService.getHousesForCommunity(this.communityId).subscribe(houses => {
@@ -71,7 +84,7 @@ export class CommunityResidentsComponent implements OnInit {
     this.companyService.assignHouseToResident(userId, +houseId, this.communityId).subscribe({
       next: () => {
         this.assigningHouse[userId] = false;
-        this.fetchResidents();
+        this.fetchResidentsAndHouses();
       },
       error: () => {
         this.assigningHouse[userId] = false;
@@ -105,7 +118,7 @@ export class CommunityResidentsComponent implements OnInit {
       next: (res) => {
         this.creating.set(false);
         this.showForm.set(false);
-        this.fetchResidents();
+        this.fetchResidentsAndHouses();
       },
       error: (err) => {
         this.creating.set(false);
