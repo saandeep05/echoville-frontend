@@ -22,10 +22,18 @@
             <td>{{ resident.email }}</td>
             <td>{{ resident.phone }}</td>
             <td>
-              <ng-container *ngIf="resident.houseDTO; else noHouse">
+              <ng-container *ngIf="resident.houseDTO; else assignHouseDropdown">
                 Block {{ resident.houseDTO.block }}, Floor {{ resident.houseDTO.floor }}, #{{ resident.houseDTO.number }} ({{ resident.houseDTO.type }})
               </ng-container>
-              <ng-template #noHouse>—</ng-template>
+              <ng-template #assignHouseDropdown>
+                <select (change)="assignHouse(resident.id, $event.target.value)" [disabled]="assigningHouse[resident.id]">
+                  <option value="">-- Assign House --</option>
+                  <option *ngFor="let house of houses" [value]="house.id">
+                    Block {{ house.block }}, Floor {{ house.floor }}, #{{ house.number }} ({{ house.type }})
+                  </option>
+                </select>
+                <span *ngIf="assigningHouse[resident.id]">Assigning...</span>
+              </ng-template>
             </td>
           </tr>
         </tbody>

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { CompanyService } from '../../../services/company.service';
 import { Resident } from '../../../models/resident.model';
+import { House } from '../../../models/house.model';
 
 @Component({
   selector: 'app-community-residents',
@@ -28,6 +29,9 @@ export class CommunityResidentsComponent implements OnInit {
     phone: ''
   };
 
+  houses: House[] = [];
+  assigningHouse: { [userId: number]: boolean } = {};
+
   constructor(private companyService: CompanyService) {}
 
   ngOnInit() {
@@ -43,6 +47,7 @@ export class CommunityResidentsComponent implements OnInit {
     }
     if (this.communityId) {
       this.fetchResidents();
+      this.fetchHouses();
     }
   }
 
@@ -51,6 +56,27 @@ export class CommunityResidentsComponent implements OnInit {
     this.companyService.getResidentsForCommunity(this.communityId).subscribe(res => {
       this.residents.set(res);
       this.loading.set(false);
+    });
+  }
+
+  fetchHouses() {
+    this.companyService.getHousesForCommunity(this.communityId).subscribe(houses => {
+      this.houses = houses || [];
+    });
+  }
+
+  assignHouse(userId: number, houseId: number) {
+    if (!houseId) return;
+    this.assigningHouse[userId] = true;
+    this.companyService.assignHouseToResident(userId, +houseId, this.communityId).subscribe({
+      next: () => {
+        this.assigningHouse[userId] = false;
+        this.fetchResidents();
+      },
+      error: () => {
+        this.assigningHouse[userId] = false;
+        this.error = 'Failed to assign house.';
+      }
     });
   }
 

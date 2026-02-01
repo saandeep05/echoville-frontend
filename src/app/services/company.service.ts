@@ -160,4 +160,24 @@ export class CompanyService {
       })
     );
   }
+
+  assignHouseToResident(userId: number, houseId: number, communityId: number): Observable<any> {
+    let companyId = '';
+    try {
+      const user = localStorage.getItem('user');
+      if (user) companyId = JSON.parse(user)?.userDTO?.companyId;
+    } catch {}
+    const token = localStorage.getItem('authToken');
+    const headersObj: { [k: string]: string } = {};
+    if (companyId) headersObj['companyId'] = companyId;
+    if (communityId) headersObj['communityId'] = String(communityId);
+    if (token) headersObj['Authorization'] = `Bearer ${token}`;
+    const headers = new HttpHeaders(headersObj);
+    return this.http.post(`/user/${userId}/house/${houseId}`, {}, { headers }).pipe(
+      catchError(err => {
+        console.error('Failed to assign house', err);
+        return of(null);
+      })
+    );
+  }
 }
