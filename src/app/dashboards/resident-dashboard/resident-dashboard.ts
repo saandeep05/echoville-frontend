@@ -3,16 +3,24 @@ import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
+import { ResidentSidebarComponent } from './sidebar/sidebar';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-resident-dashboard',
   templateUrl: './resident-dashboard.html',
   styleUrl: './resident-dashboard.css',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatCardModule]
+  imports: [CommonModule, MatButtonModule, MatCardModule, ResidentSidebarComponent, RouterModule]
 })
 export class ResidentDashboardComponent implements OnInit {
   user: any;
+  sidebarItems = [
+    { label: 'My Home', route: 'my-home' },
+    { label: 'My Bills', route: 'my-bills' },
+    { label: 'History', route: 'history' }
+  ];
+  baseRoute = '/dashboard/resident';
 
   constructor(private router: Router) {
     this.user = null;

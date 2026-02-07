@@ -31,7 +31,12 @@ const routes: Routes = [
     { path: 'residents', component: CommunityResidentsComponent },
     { path: 'bills', component: CommunityBillsComponent }
   ] },
-  { path: 'dashboard/resident', component: ResidentDashboardComponent },
+  { path: 'dashboard/resident', component: ResidentDashboardComponent, children: [
+    { path: '', redirectTo: 'my-home', pathMatch: 'full' },
+    { path: 'my-home', loadComponent: () => import('./dashboards/resident-dashboard/my-home/my-home').then(m => m.MyHomeComponent) },
+    { path: 'my-bills', loadComponent: () => import('./dashboards/resident-dashboard/my-bills/my-bills').then(m => m.MyBillsComponent) },
+    { path: 'history', loadComponent: () => import('./dashboards/resident-dashboard/history/history').then(m => m.HistoryComponent) }
+  ] },
   { path: '**', redirectTo: '/home' }
 ];
 
