@@ -15,6 +15,27 @@ export class CompanyService {
   private baseUrl = '';
 
   constructor(private http: HttpClient) {}
+  
+    getHouseForUser(userId: number, communityId?: number): Observable<House | null> {
+      let companyId = '';
+      try {
+        const user = localStorage.getItem('user');
+        if (user) companyId = JSON.parse(user)?.userDTO?.companyId;
+      } catch {}
+      const token = localStorage.getItem('authToken');
+      const headersObj: { [k: string]: string } = {};
+      if (companyId) headersObj['companyId'] = companyId;
+      if (communityId) headersObj['communityId'] = String(communityId);
+      if (token) headersObj['Authorization'] = `Bearer ${token}`;
+      const headers = new HttpHeaders(headersObj);
+      return this.http.get<ApiResponse<House>>(`/user/${userId}/house`, { headers }).pipe(
+        map(res => res?.data || null),
+        catchError(err => {
+          console.error('Failed to load house info', err);
+          return of(null);
+        })
+      );
+    }
 
   createBill(bill: {
     title: string;

@@ -1,0 +1,28 @@
+<div *ngIf="house() as h" class="house-card">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>🏠 House Details</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="card-row">
+        <span class="label">Block:</span>
+        <span class="value">{{ h.block || '-' }}</span>
+      </div>
+      <div class="card-row">
+        <span class="label">Floor:</span>
+        <span class="value">{{ h.floor || '-' }}</span>
+      </div>
+      <div class="card-row">
+        <span class="label">Number:</span>
+        <span class="value">{{ h.number || '-' }}</span>
+      </div>
+      <div class="card-row">
+        <span class="label">Type:</span>
+        <span class="value">{{ h.type || '-' }}</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+<div *ngIf="!house()">
+  <p>No house information found.</p>
+</div>
