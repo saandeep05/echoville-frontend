@@ -1,0 +1,27 @@
+<div *ngIf="bills().length > 0; else noBills">
+  <div class="bills-list">
+    <mat-card *ngFor="let bill of bills()" class="bill-card">
+      <mat-card-header>
+        <mat-card-title>{{ bill.title }}</mat-card-title>
+        <mat-card-subtitle>{{ bill.status }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="bill-row">
+          <span class="label">Amount:</span>
+          <span class="value">₹{{ bill.amount }}</span>
+        </div>
+        <div class="bill-row">
+          <span class="label">Due Date:</span>
+          <span class="value">{{ bill.dueDate | date:'mediumDate' }}</span>
+        </div>
+        <div class="bill-row">
+          <span class="label">House:</span>
+          <span class="value">Block {{ bill.houseDTO.block }}, Floor {{ bill.houseDTO.floor }}, No. {{ bill.houseDTO.number }}</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+<ng-template #noBills>
+  <p>No bills found.</p>
+</ng-template>
