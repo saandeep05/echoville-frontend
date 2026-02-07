@@ -153,7 +153,7 @@ export class CompanyService {
     if (companyId) headersObj['companyId'] = companyId;
     if (token) headersObj['Authorization'] = `Bearer ${token}`;
     const headers = new HttpHeaders(headersObj);
-    return this.http.get<ApiResponse<House[]>>(`/house/${commId}`, { headers }).pipe(
+    return this.http.get<ApiResponse<House[]>>(`/house/community/${commId}`, { headers }).pipe(
       map(res => res?.data || []),
       catchError(err => {
         console.error('Failed to load houses', err);
@@ -172,7 +172,7 @@ export class CompanyService {
     if (companyId) headersObj['companyId'] = companyId;
     if (token) headersObj['Authorization'] = `Bearer ${token}`;
     const headers = new HttpHeaders(headersObj);
-    return this.http.get<ResidentsResponse>(`/user/${communityId}`, { headers }).pipe(
+    return this.http.get<ResidentsResponse>(`/user/community/${communityId}`, { headers }).pipe(
       map(res => res?.data || []),
       catchError(err => {
         console.error('Failed to load residents', err);
@@ -192,7 +192,7 @@ export class CompanyService {
     if (companyId) headersObj['companyId'] = companyId;
     if (token) headersObj['Authorization'] = `Bearer ${token}`;
     const headers = new HttpHeaders(headersObj);
-    return this.http.post<{ data: Resident }>(`/user/${communityId}`, resident, { headers }).pipe(
+    return this.http.post<{ data: Resident }>(`/user/community/${communityId}`, resident, { headers }).pipe(
       map(res => res?.data || null),
       catchError(err => {
         console.error('Failed to create resident', err);
